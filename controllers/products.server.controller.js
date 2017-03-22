@@ -18,6 +18,31 @@ module.exports.list = function(req, res) {
   });
 };
 
+
+exports.new = function(req, res) {
+	res.render('./../public/views/product/create.ejs', {
+		user: req.user || null,
+		request: req
+	});
+};
+exports.all = function(req, res) {
+	res.render('./../public/views/product/list.ejs', {
+		user: req.user || null,
+		request: req
+	});
+};
+exports.edit = function(req, res) {
+	res.render('./../public/views/product/list.ejs', {
+		user: req.user || null,
+		request: req
+	});
+};
+exports.view = function(req, res) {
+	res.render('./../public/views/product/list.ejs', {
+		user: req.user || null,
+		request: req
+	});
+};
 module.exports.create = function(req, res) {
   var product = new Product(req.body);
   product.user = req.user;
@@ -39,7 +64,8 @@ module.exports.read = function(req, res) {
 
 
 exports.delete = function(req, res) {
-	var roduct = req.product;
+	var product = req.product;
+
 	product.remove(function(err) {
 		if (err) {
 			return res.status(400).send();
@@ -68,8 +94,9 @@ exports.productByID = function(req, res, next, id) {
 	Product.findById(id).populate('user', 'email').exec(function(err, product) {
 		if (err) return next(err);
 		if (!product) return next(new Error('Failed to load product ' + id));
-		req.product = product
-		;
+
+		req.product = product;
+
 		next();
 	});
 };
